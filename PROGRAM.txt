@@ -1,0 +1,102 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+#define WEEKS 10
+
+struct Student {
+    string rollNo;
+    int marks[WEEKS];
+};
+
+// Search function
+int searchStudent(Student s[], int n, string key) {
+    for(int i = 0; i < n; i++) {
+        if(s[i].rollNo == key)
+            return i;
+    }
+    return -1;
+}
+
+int main() {
+
+    string suffix[] = {
+        "IW","IX","IY","IZ","JA","JB","JC","JD","JE","JF",
+        "JG","JH","JI","JJ","JK","JL","JM","JN","JO","JP",
+        "JQ","JR","JS","JT","JU","JV","JW","JX","JY","JZ",
+        "KA","KB","KC","KD","KE","KF","KG","KH","KI","KJ",
+        "KK","KL","KM","KN","KO","KP","KQ","KR","KS","KT",
+        "KU","KV","KW","KX","KY","KZ",
+        "LA","LB","LC","LD","LE","LF","LG","LH","LI","LJ"
+    };
+
+    int n = sizeof(suffix)/sizeof(suffix[0]);
+
+    Student s[n];
+
+    // Initialize
+    for(int i = 0; i < n; i++) {
+        s[i].rollNo = "25A31A05" + suffix[i];
+        for(int j = 0; j < WEEKS; j++) {
+            s[i].marks[j] = rand() % 101;
+        }
+    }
+
+    int cont;
+
+    do {
+        string roll;
+        cout << "\nEnter Roll Number: ";
+        cin >> roll;
+
+        int index = searchStudent(s, n, roll);
+
+        if(index == -1) {
+            cout << "Record Not Found\n";
+        } else {
+            cout << "Record Found\n";
+
+            int choice;
+            cout << "\n1. Experiment Marks\n2. Average\nEnter choice: ";
+            cin >> choice;
+
+            if(choice == 1) {
+                int exp;
+                cout << "Enter Experiment Number (1-10): ";
+                cin >> exp;
+
+                if(exp >= 1 && exp <= 10) {
+                    cout << "Marks = " << s[index].marks[exp-1] << endl;
+                } else {
+                    cout << "Invalid Experiment\n";
+                }
+            }
+
+            else if(choice == 2) {
+                int range, sum = 0;
+                cout << "Enter n (1-10): ";
+                cin >> range;
+
+                if(range >= 1 && range <= 10) {
+                    for(int i = 0; i < range; i++)
+                        sum += s[index].marks[i];
+
+                    cout << "Average = " << (float)sum / range << endl;
+                } else {
+                    cout << "Invalid range\n";
+                }
+            }
+
+            else {
+                cout << "Invalid choice\n";
+            }
+        }
+
+        // 👉 Continue / Exit option
+        cout << "\nPress 1 to Continue or 0 to Exit: ";
+        cin >> cont;
+
+    } while(cont == 1);
+
+    return 0;
+}
